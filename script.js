@@ -1,5 +1,7 @@
 const question = document.getElementById("question");
 const answer = document.getElementById("answer");
+const loaders = document.getElementById("loaders");
+const container = document.getElementsByClassName("container")[0];
 
 let init = 0;
 
@@ -18,6 +20,10 @@ question.innerHTML = botSay()[0];
 let usersData = []
 
 function botStart() {
+    if (answer.value === "") {
+        return alert("Please enter your answer!");
+    }
+
     init++
     if (init === 1) {
         botDelay({ name: answer.value })
@@ -34,11 +40,19 @@ function botStart() {
     };
 
 function botDelay(answerUser) {
+    loaders.style.display = "block";
+    container.style.filter = "blur(5px)";
+    
     setTimeout(() => {
+        loaders.style.display = "none";
+        container.style.filter = "none";
         question.innerHTML = botSay(answerUser)[init]
     }, 1200);
-    usersData.push(answerUser);
+
+    question.innerHTML = "Loading...";
     answer.value = "";
+
+    usersData.push(answerUser);
 }
 
 function finishing() {
@@ -47,6 +61,7 @@ function finishing() {
 }
 
 function botEnd() {
+    alert(`${usersData[0].name} you will be redirected to the main page!`);
     window.location.reload();
 }
 }
